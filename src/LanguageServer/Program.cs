@@ -85,6 +85,17 @@ namespace MSBuildProjectTools.LanguageServer
             }
             catch (Exception unexpectedError)
             {
+                const string sdkResolveErrorText = "Microsoft.Build.BackEnd.SdkResolution";
+
+                var exceptionString = unexpectedError.ToString();
+                if (exceptionString.Contains(sdkResolveErrorText))
+                {
+                    Console.Error.WriteLine("This is .NET SDK resolve error.");
+                    Console.Error.WriteLine("Create \'global.json\' at top directory, and resolve SDK version yourself.");
+                    Console.Error.WriteLine("https://learn.microsoft.com/en-us/dotnet/core/tools/global-json");
+                    Console.Error.WriteLine();
+                }
+
                 Console.Error.WriteLine(unexpectedError);
 
                 return 1;
